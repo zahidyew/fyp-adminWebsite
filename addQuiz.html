@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <link rel="stylesheet" type="text/css" href="./css/style.css">
+   <title>Add Quiz</title>
+</head>
+
+<body>
+   <h1>Add Quiz</h1>
+   <div id="">
+      Quiz Name: <input type="text" name="quizName" id="quizName" required><br>
+      <!-- Logo: <input type="file" name="file" id="file"><br>
+      Date: <input type="date" name="date" id="date"><br>
+      Time: <input type="time" name="time" id="time"><br> -->
+      Number of Questions: <input type="number" name="numOfQues" id="numOfQues" min="1" required><br>
+      Time Limit: <input type="number" name="timeLimit" id="timeLimit" min="1" required><br>
+      <button type="submit" name="submit" id="submit">Submit</button>
+      <button type="reset" name="reset" id="reset">Reset</button>
+   </div>
+
+   <div id="quesSection">
+      <div class="qForm" style="display: none;">
+         Question: <textarea name="question" cols="80" rows="2"></textarea><br>
+         Choice 1: <input type="text" class="" required><br>
+         Choice 2: <input type="text" class="" required><br>
+         Choice 3: <input type="text" class="" required><br>
+         Choice 4: <input type="text" class="" required><br>
+         Answer: <input type="text" class="" required><br>
+      </div>
+   </div>
+</body>
+   <script>
+      const submitBtn = document.getElementById("submit");
+      const resetBtn = document.getElementById("reset");
+
+      submitBtn.addEventListener("click", () => {
+         // send a fetch request to a php file to process the input for quiz then, display the quest forms
+         let quesData = getQuizFormValues();
+
+         if(quesData === false) {
+            alert("Please fill out all the fields.")
+         }
+         else {
+            fetch('./quiz.php', {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify(quesData)
+            })
+               .then((response) => response.json())
+               .then((data) => {
+                  console.log('Success:', data);
+                  // here show the ques form
+                  //questionForm.style.display = 'block';
+                  for(let i = 1; i <= quesData.ques; i++) {
+                     createQuesForm();
+                  }               
+               })
+               .catch((error) => {
+                  console.error('Error:', error);
+               });
+         }   
+      });
+
+      function getQuizFormValues() {
+         const quizName = document.getElementById("quizName").value;
+         const numOfQues = document.getElementById("numOfQues").value;
+         const timeLimit = document.getElementById("timeLimit").value;
+
+         if(quizName === "" || numOfQues === "" || timeLimit === "") {
+            return false;
+         }
+         else {
+            let quesData = {
+               name: quizName,
+               ques: numOfQues,
+               time: timeLimit
+            };
+
+            return quesData;
+         }       
+      }
+
+      function createQuesForm() {
+         /* let quesDiv = document.createElement("div");
+         quesDiv.className = "question";
+
+         let header = document.createElement("h3");
+         let headerText = document.createTextNode("Question"); */
+
+         let element = document.getElementById("quesSection");
+         const sda = document.getElementsByClassName("qForm");
+         const p = sda[0].cloneNode(true);
+
+         /* header.appendChild(headerText);
+         quesDiv.appendChild(header); */
+         p.style.display = "block";
+         element.appendChild(p);
+
+         /* var para = document.createElement("p");
+         var node = document.createTextNode("This is new.");
+         para.appendChild(node);
+         var element = document.getElementById("questionForm");
+         element.appendChild(para); */
+      }
+   </script>
+</html>

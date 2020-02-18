@@ -30,12 +30,29 @@
    $stmt->bindParam(':numOfQues', $data->ques);
    $stmt->bindParam(':timeLimit', $data->time);
 
-   // ************** uncomment these later. RN testing other parts and dont want to spam DB
-   /* if ($stmt->execute()) {
-      echo json_encode('Success');
+   if ($stmt->execute()) {
+      // get the ID of the quiz so that we can link the quiz with the questions.
+      $query2 = 'SELECT id FROM ' . $table . 
+                  ' WHERE name = :name
+                   AND date = :date
+                   AND time = :time
+                   AND numOfQues = :numOfQues
+                   AND timeLimit = :timeLimit';
+
+      $stmt2 = $db->prepare($query2);
+      $stmt2->bindParam(':name', $data->name);
+      $stmt2->bindParam(':date', $date);
+      $stmt2->bindParam(':time', $time);
+      $stmt2->bindParam(':numOfQues', $data->ques);
+      $stmt2->bindParam(':timeLimit', $data->time);
+      $stmt2->execute();
+
+      $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+      $id = $row2['id'];
+
+      echo json_encode($id);
    } else {
       echo json_encode("Error: %s.\n", $stmt->error);
-   } */
-
-   echo json_encode($data->time);
+   }
+   //echo json_encode($data->name);
 ?>

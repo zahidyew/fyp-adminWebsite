@@ -20,28 +20,51 @@
       Time Limit: <input type="number" name="timeLimit" id="timeLimit" min="1" required><br>
       <button type="submit" name="submit" id="submit">Submit</button>
       <button type="reset" name="reset" id="reset">Reset</button>
-   </div>
+   </div><br>
 
    <div id="quesSection">
-      <div class="qForm" style="display: none;">
-         Question: <textarea name="question" cols="80" rows="2"></textarea><br>
-         Choice 1: <input type="text" class="" required><br>
-         Choice 2: <input type="text" class="" required><br>
-         Choice 3: <input type="text" class="" required><br>
-         Choice 4: <input type="text" class="" required><br>
-         Answer: <input type="text" class="" required><br>
+      <div class="qForm" style="display: none;"><br><br>
+         Question: <textarea name="question" class="question" cols="80" rows="2"></textarea><br>
+         Choice 1: <input type="text" class="choice1" required><br>
+         Choice 2: <input type="text" class="choice2" required><br>
+         Choice 3: <input type="text" class="choice3" required><br>
+         Choice 4: <input type="text" class="choice4" required><br>
+         Answer: <input type="text" class="answer" required><br>
       </div>
    </div>
+
+   <button type="submit" id="submit2" style="display: none;">Submit</button>
+   <!-- <button type="reset" id="reset2" style="display: none;">Reset</button> -->
 </body>
    <script>
+      const quizNameElem = document.getElementById("quizName");
+      const numOfQuesElem = document.getElementById("numOfQues");
+      const timeLimitElem = document.getElementById("timeLimit");
       const submitBtn = document.getElementById("submit");
       const resetBtn = document.getElementById("reset");
 
+      const questionElem = document.getElementsByClassName("question");
+      const choice1Elem = document.getElementsByClassName("choice1");
+      const choice2Elem = document.getElementsByClassName("choice2");
+      const choice3Elem = document.getElementsByClassName("choice3");
+      const choice4Elem = document.getElementsByClassName("choice4");
+      const answerElem = document.getElementsByClassName("answer");
+      const submitBtn2 = document.getElementById("submit2");
+      //const resetBtn2 = document.getElementById("reset2");
+
+      var quizId;
+
+      resetBtn.addEventListener("click", () => {
+         quizNameElem.value = "";
+         numOfQuesElem.value = "";
+         timeLimitElem.value = "";
+      });
+
       submitBtn.addEventListener("click", () => {
          // send a fetch request to a php file to process the input for quiz then, display the quest forms
-         let quesData = getQuizFormValues();
+         const quizData = getQuizFormValues();
 
-         if(quesData === false) {
+         if(quizData === false) {
             alert("Please fill out all the fields.")
          }
          else {
@@ -50,16 +73,18 @@
                headers: {
                   'Content-Type': 'application/json',
                },
-               body: JSON.stringify(quesData)
+               body: JSON.stringify(quizData)
             })
                .then((response) => response.json())
                .then((data) => {
-                  console.log('Success:', data);
+                  quizId = data;
+                  //console.log('Success:', data);
                   // here show the ques form
-                  //questionForm.style.display = 'block';
-                  for(let i = 1; i <= quesData.ques; i++) {
+                  for(let i = 1; i <= quizData.ques; i++) {
                      createQuesForm();
-                  }               
+                  }      
+                  submitBtn2.style.display = "inline";
+                  //resetBtn2.style.display = "inline";   
                })
                .catch((error) => {
                   console.error('Error:', error);
@@ -68,45 +93,96 @@
       });
 
       function getQuizFormValues() {
-         const quizName = document.getElementById("quizName").value;
-         const numOfQues = document.getElementById("numOfQues").value;
-         const timeLimit = document.getElementById("timeLimit").value;
+         const quizName = quizNameElem.value;
+         const numOfQues = numOfQuesElem.value;
+         const timeLimit = timeLimitElem.value;
 
          if(quizName === "" || numOfQues === "" || timeLimit === "") {
             return false;
          }
          else {
-            let quesData = {
+            const quizData = {
                name: quizName,
                ques: numOfQues,
                time: timeLimit
             };
+            submitBtn.style.display = "none";
+            resetBtn.style.display = "none";
 
-            return quesData;
+            return quizData;
          }       
       }
 
       function createQuesForm() {
-         /* let quesDiv = document.createElement("div");
-         quesDiv.className = "question";
+         const element = document.getElementById("quesSection");
+         const qForm = document.getElementsByClassName("qForm");
+         const cloneForm = qForm[0].cloneNode(true);
 
-         let header = document.createElement("h3");
-         let headerText = document.createTextNode("Question"); */
+         cloneForm.style.display = "block";
+         element.appendChild(cloneForm);
+      }
 
-         let element = document.getElementById("quesSection");
-         const sda = document.getElementsByClassName("qForm");
-         const p = sda[0].cloneNode(true);
+      submitBtn2.addEventListener("click", () => {
+         // console.log(questionsData);
+         const questionsData = getQuesFormValue();
+         
+         fetch('./question.php', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(questionsData)
+         })
+            .then((response) => response.json())
+            .then((data) => {
+               console.log('Success:', data);
+               alert("Success.")
+            })
+            .catch((error) => {
+               console.error('Error:', error);
+            });
+      });
 
-         /* header.appendChild(headerText);
-         quesDiv.appendChild(header); */
-         p.style.display = "block";
-         element.appendChild(p);
+      function getQuesFormValue() {
+         const numOfQues = numOfQuesElem.value;
+         let questionArray = [];
+         let choice1Array = [];
+         let choice2Array = [];
+         let choice3Array = [];
+         let choice4Array = [];
+         let answerArray = [];
 
-         /* var para = document.createElement("p");
-         var node = document.createTextNode("This is new.");
-         para.appendChild(node);
-         var element = document.getElementById("questionForm");
-         element.appendChild(para); */
+         // starts at index 1 as the "real 1st, i.e. [0]" is hidden by default.
+         for (let i = 1; i <= numOfQues; i++) {
+            if (i == 1) {
+               questionArray += questionElem[i].value;
+               choice1Array += choice1Elem[i].value;
+               choice2Array += choice2Elem[i].value;
+               choice3Array += choice3Elem[i].value;
+               choice4Array += choice4Elem[i].value;
+               answerArray += answerElem[i].value;
+            }
+            else {
+               questionArray += ";" + questionElem[i].value;
+               choice1Array += ";" + choice1Elem[i].value;
+               choice2Array += ";" + choice2Elem[i].value;
+               choice3Array += ";" + choice3Elem[i].value;
+               choice4Array += ";" + choice4Elem[i].value;
+               answerArray += ";" + answerElem[i].value;
+            }
+         }
+         
+         const questionsData = {
+            questions: questionArray,
+            choiceA: choice1Array,
+            choiceB: choice2Array,
+            choiceC: choice3Array,
+            choiceD: choice4Array,
+            answers: answerArray,
+            quizId: quizId,
+            numOfQues: numOfQues
+         };
+         return questionsData;
       }
    </script>
 </html>

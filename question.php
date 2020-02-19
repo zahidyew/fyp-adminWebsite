@@ -47,5 +47,4 @@
          echo json_encode(500);
       }
    }
-
-   
+?>

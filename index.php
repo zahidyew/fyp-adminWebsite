@@ -1,4 +1,5 @@
 <?php
+   session_start();
    include_once './config/Database.php';
 
    // Instantiate DB & connect
@@ -22,13 +23,16 @@
       if ($num > 0) {
          $row = $stmt->fetch(PDO::FETCH_ASSOC);
          if (password_verify($password, $row['password'])) {
+            $_SESSION['loggedIn'] = true;
             redirectTo('./homepage.php');
-         } else {
+         } 
+         else {
             // prompt them its incorrect
-            echo 'False';
+            echo '<script>alert("Incorrect password.")</script>';
          }
-      } else {
-         echo 'No such username';
+      } 
+      else {
+         echo '<script>alert("Username does not exists.")</script>';
       }
    }
 

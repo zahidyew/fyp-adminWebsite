@@ -125,7 +125,7 @@
       submitBtn2.addEventListener("click", () => {
          // console.log(questionsData);
          const questionsData = getQuesFormValue();
-         
+
          fetch('./question.php', {
             method: 'POST',
             headers: {
@@ -136,7 +136,8 @@
             .then((response) => response.json())
             .then((data) => {
                console.log('Success:', data);
-               alert("Success.")
+               alert("Success.");
+               location.replace("./homepage.php");
             })
             .catch((error) => {
                console.error('Error:', error);

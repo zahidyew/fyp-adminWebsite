@@ -18,3 +18,7 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+a {
+  text-decoration: none;
+}

@@ -34,23 +34,29 @@ $stmt->execute();
    <?php
    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
       echo '<div class="quesBlock">';
-      echo '<p class="quesLine">' . $num . '. ' . $row['ques'] . '</p>';
-      echo '<p class="choices"> A. ' . $row['choiceA'] . '</p>';
-      echo '<p class="choices"> B. ' . $row['choiceB'] . '</p>';
-      echo '<p class="choices"> C. ' . $row['choiceC'] . '</p>';
-      echo '<p class="choices"> D. ' . $row['choiceD'] . '</p>';
-      echo '<p class="answer"> Answer: ' . $row['answer'] . '</p>';
+         echo '<p class="quesLine">' . $num . '. ' . $row['ques'] . '</p>';
+         echo '<p class="choices"> A. ' . $row['choiceA'] . '</p>';
+         echo '<p class="choices"> B. ' . $row['choiceB'] . '</p>';
+         echo '<p class="choices"> C. ' . $row['choiceC'] . '</p>';
+         echo '<p class="choices"> D. ' . $row['choiceD'] . '</p>';
+         echo '<p class="answer"> Answer: ' . $row['answer'] . '</p>';
+
+         echo '<form action="./editQuesPage.php" method="GET">';
+            echo '<button type="submit" value="'. $row['id'] .'" name="editQues" id="editQues">Edit</button>';
+         echo '</form>';
+
+         //echo '<td><a href="./editQues.php?QuesId=' . $row['id'] . '">Edit</a></td>';
       echo '</div><br>';
       $num++;
    }
    ?>
 </body>
-<script>
+<!-- <script>
    const viewScoreBtn = document.getElementById("viewScore");
 
    viewScoreBtn.addEventListener("click", () => {
       window.location = "./quizScore.php";
    });
-</script>
+</script> -->
 
 </html>

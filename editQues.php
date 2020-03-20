@@ -40,7 +40,12 @@
       $stmt->bindParam(':id', $quesId);
 
       if ($stmt->execute()) {
-         redirectTo('./viewQuestions.php?id=' .$quizId);
+         $query2 = 'SELECT name FROM quiz WHERE id = ' . $quizId; 
+         $stmt2 = $db->prepare($query2);
+         $stmt2->execute();
+         $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+         redirectTo('./viewQuestions.php?id=' .$quizId. '&quiz=' .$row2['name']);
       } else {
          printf("Error: %s.\n", $stmt->error);
          //return false;

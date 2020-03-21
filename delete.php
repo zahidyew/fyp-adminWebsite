@@ -14,37 +14,49 @@ $database = new Database();
 $db = $database->connect();
 
 $quizId = $_GET['id'];
-$quizName = $_GET['quiz'];
+$flag = false;
 
-/* if (isset($_GET['viewScore'])) {
-   // user access thru viewQustions page
-   $values = explode(",", $_GET['viewScore']);
-   $quizId = $values[0];
-   $quizName = $values[1];
-} elseif (isset($_GET['id'])) {
-   // user access thru homepage
-   $quizId = $_GET['id'];
-   $quizName = $_GET['quiz'];
-} */
-
-
-$query = 'SELECT * FROM quizrecords 
+$query = 'DELETE FROM quizrecords 
             WHERE quizId = :quizId';
 
 $stmt = $db->prepare($query);
 $stmt->bindParam(':quizId', $quizId);
-$stmt->execute();
+
+if ($stmt->execute()) {
+   $query2 = 'DELETE FROM question 
+               WHERE quizId = :quizId';
+
+   $stmt2 = $db->prepare($query2);
+   $stmt2->bindParam(':quizId', $quizId);
+
+   if ($stmt2->execute()) {
+      $query3 = 'DELETE FROM quiz 
+                  WHERE id = :quizId';
+
+      $stmt3 = $db->prepare($query3);
+      $stmt3->bindParam(':quizId', $quizId);
+
+      if ($stmt3->execute()) {
+         $flag = true;
+      }
+   }
+}
+
+if ($flag == true) {
+   $msg = "Successfully deleted.";
+} else {
+   $msg = "Error. Unable to delete the records.";
+}
 ?>
 
 <!doctype html>
 <html class="fixed sidebar-left-collapsed">
 
 <head>
-
    <!-- Basic -->
    <meta charset="UTF-8">
 
-   <title>Admin Website | Quiz Scores</title>
+   <title>Admin Website</title>
    <meta name="keywords" content="HTML5 Admin Template" />
    <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
    <meta name="author" content="JSOFT.net">
@@ -168,41 +180,26 @@ $stmt->execute();
 
          <section role="main" class="content-body">
             <header class="page-header">
-               <h2>Quiz Scores</h2>
             </header>
             <div class="panel-body">
-               <h2><?php echo $quizName; ?></h2><br>
-               <table class="table table-bordered table-striped mb-none" id="datatable-default">
-                  <thead>
-                     <tr>
-                        <th>No.</th>
-                        <th>Name</th>
-                        <th>Mark</th>
-                        <th>Time</th>
-                        <th>Date</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <?php
-                     // listing all the records in database
-                     $num = 1;
-                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        echo '<tr>';
-                        echo '<td>' . $num . '</td>';
-                        echo '<td>' . $row['username'] .  '</a></td>';
-                        echo '<td>' . $row['mark'] . '</td>';
-                        echo '<td>' . $row['time'] . '</td>';
-                        echo '<td>' . $row['date'] . '</td>';
-                        echo '</tr>';
-                        $num++;
-                     }
-                     ?>
-                  </tbody>
-               </table>
+               <p class="text-center text-dark"><?php echo $msg; ?></p>
+               <div class="row">
+                  <div class="text-center">
+                     <button class="btn btn-lg btn-primary" type="button" id="okBtn">OK</button>
+                  </div>
+               </div>
             </div>
+            <!-- start: page -->
+            <!-- end: page -->
          </section>
       </div>
    </section>
+
+   <script>
+      const okBtn = document.getElementById("okBtn").addEventListener("click", () => {
+         window.location = "./homepage.php";
+      })
+   </script>
 
    <!-- Vendor -->
    <script src="assets/vendor/jquery/jquery.js"></script>

@@ -209,7 +209,7 @@ $postValue = "$quesId,$quizId";
 
                      <footer class="panel-footer">
                         <div class="row">
-                           <div class="col-sm-2 col-sm-offset-8">
+                           <div class="col-sm-12 text-right">
                               <button class="btn btn-primary" type="submit" name="submit" value="<?php echo $postValue ?>">Submit</button>
                            </div>
                         </div>

@@ -164,10 +164,13 @@ $stmt->execute();
             <div class="panel-body">
                <h2><i class="fa fa-cube"></i> <?php echo $quiz; ?></h2>
                <div class="row">
-                  <div class="col-sm-12 text-right">
-                     <form action="./quizScore.php" method="GET">
+                  <div class="col-sm-11 text-right">
+                     <button id="delete" type="button" class="btn btn-danger">Delete <i class="fa fa-trash-o"></i></button><span> |</span>
+                     <button id="viewScore" type="button" class="btn btn-primary">View Score <i class="fa fa-graduation-cap"></i></button>
+
+                     <!-- <form action="./quizScore.php" method="GET">
                         <button type="submit" value="<?php echo $getValue ?>" name="viewScore" class="btn btn-primary">View Score <i class="fa fa-graduation-cap"></i></button>
-                     </form>
+                     </form> -->
                   </div>
                </div><br>
 
@@ -180,13 +183,15 @@ $stmt->execute();
                   echo '<p class="choices"> B. ' . $row['choiceB'] . '</p>';
                   echo '<p class="choices"> C. ' . $row['choiceC'] . '</p>';
                   echo '<p class="choices"> D. ' . $row['choiceD'] . '</p>';
-                  echo '<p class="answer"> Answer: ' . $row['answer'] . '</p>';
+                  echo '<p class="text-dark answer"> Answer: ' . $row['answer'] . '</p>';
 
                   echo '<form action="./editQuesPage.php" method="GET">';
-                  echo '<button type="submit" value="' . $row['id'] . '" name="editQues" id="editQues" class="btn btn-info">Edit</button>';
+                  echo '<div class="row">';
+                  echo '<div class="col-sm-12 text-right">';
+                  echo '<button type="submit" value="' . $row['id'] . '" name="editQues" id="editQues" class="btn btn-info">Edit <i class="fa  fa-edit"></i></button>';
+                  echo '</div>';
+                  echo '</div>';
                   echo '</form>';
-
-                  //echo '<td><a href="./editQues.php?QuesId=' . $row['id'] . '">Edit</a></td>';
                   echo '</div><br>';
                   echo '</section>';
                   $num++;
@@ -196,6 +201,28 @@ $stmt->execute();
          </section>
       </div>
    </section>
+
+   <script>
+      const viewScoreBtn = document.getElementById("viewScore");
+      const deleteBtn = document.getElementById("delete");
+
+      const quizId = <?php echo $id; ?>;
+      const quizName = "<?php echo $quiz; ?>";
+
+      viewScoreBtn.addEventListener("click", () => {
+         window.location = "./quizScore.php?id=" + quizId + "&quiz=" + quizName;
+      })
+
+      deleteBtn.addEventListener("click", () => {
+         let confirmBox = confirm("Are you sure?\nThis will delete all the records associated with this quiz including the quiz scores and questions.")
+
+         if (confirmBox == true) {
+            window.location = "./delete.php?id=" + quizId;
+         } else {
+            
+         }
+      })
+   </script>
 
    <!-- Vendor -->
    <script src="assets/vendor/jquery/jquery.js"></script>

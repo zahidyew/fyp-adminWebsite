@@ -173,7 +173,7 @@ $username = $_SESSION['username'];
                               </div>
                               <footer class="panel-footer" id="quizFooter">
                                  <div class="row">
-                                    <div class="col-sm-5 col-sm-offset-7">
+                                    <div class="col-sm-12 text-right">
                                        <button class="btn btn-default" type="button" name="reset" id="reset">Reset</button><span> |</span>
                                        <button class="btn btn-primary" type="button" name="submit" id="submit">Submit</button>
                                     </div>
@@ -244,7 +244,7 @@ $username = $_SESSION['username'];
          <!-- make the footer appear with the buttons, give it an ID -->
          <footer class="panel-footer" style="display: none;" id="submitFooter">
             <div class="row">
-               <div class="col-sm-2 col-sm-offset-10">
+               <div class="col-sm-11 text-right">
                   <button class="btn btn-primary" type="button" id="submit2">Submit</button>
                </div>
             </div>

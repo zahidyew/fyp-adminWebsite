@@ -15,6 +15,7 @@ $db = $database->connect();
 
 $quizId = $_GET['id'];
 $quizName = $_GET['quiz'];
+$fullMark = $_GET['ques'];
 
 /* if (isset($_GET['viewScore'])) {
    // user access thru viewQustions page
@@ -53,7 +54,7 @@ $stmt->execute();
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
    <!-- Web Fonts  -->
-   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
    <!-- Vendor CSS -->
    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.css" />
@@ -190,7 +191,7 @@ $stmt->execute();
                         echo '<tr>';
                         echo '<td>' . $num . '</td>';
                         echo '<td>' . $row['username'] .  '</a></td>';
-                        echo '<td>' . $row['mark'] . '</td>';
+                        echo '<td>' . $row['mark'] . '/' . $fullMark . '</td>';
                         echo '<td>' . $row['time'] . '</td>';
                         echo '<td>' . $row['date'] . '</td>';
                         echo '</tr>';

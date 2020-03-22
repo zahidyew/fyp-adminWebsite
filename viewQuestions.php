@@ -14,6 +14,11 @@ $username = $_SESSION['username'];
 // Instantiate DB & connect
 $database = new Database();
 $db = $database->connect();
+
+if (isset($_GET['ques'])) {
+   $fullMark = $_GET['ques'];
+}
+
 $id = $_GET['id'];
 $quiz = $_GET['quiz'];
 $num = 1;
@@ -44,7 +49,7 @@ $stmt->execute();
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
    <!-- Web Fonts  -->
-   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
    <!-- Vendor CSS -->
    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.css" />
@@ -181,8 +186,14 @@ $stmt->execute();
                   echo '<h5>' . $num . '. ' . $row['ques'] . '</h5>';
                   echo '<p class="choices"> A. ' . $row['choiceA'] . '</p>';
                   echo '<p class="choices"> B. ' . $row['choiceB'] . '</p>';
-                  echo '<p class="choices"> C. ' . $row['choiceC'] . '</p>';
-                  echo '<p class="choices"> D. ' . $row['choiceD'] . '</p>';
+
+                  // some questions only have 2/3 answer choices
+                  if ($row['choiceC'] !== '') {
+                     echo '<p class="choices"> C. ' . $row['choiceC'] . '</p>';
+                  }
+                  if ($row['choiceD'] !== '') {
+                     echo '<p class="choices"> D. ' . $row['choiceD'] . '</p>';
+                  }
                   echo '<p class="text-dark answer"> Answer: ' . $row['answer'] . '</p>';
 
                   echo '<form action="./editQuesPage.php" method="GET">';
@@ -208,9 +219,10 @@ $stmt->execute();
 
       const quizId = <?php echo $id; ?>;
       const quizName = "<?php echo $quiz; ?>";
+      const fullMark = "<?php echo $fullMark; ?>";
 
       viewScoreBtn.addEventListener("click", () => {
-         window.location = "./quizScore.php?id=" + quizId + "&quiz=" + quizName;
+         window.location = "./quizScore.php?id=" + quizId + "&quiz=" + quizName + "&ques=" + fullMark;
       })
 
       deleteBtn.addEventListener("click", () => {
@@ -219,7 +231,7 @@ $stmt->execute();
          if (confirmBox == true) {
             window.location = "./delete.php?id=" + quizId;
          } else {
-            
+
          }
       })
    </script>

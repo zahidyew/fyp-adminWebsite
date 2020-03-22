@@ -25,7 +25,7 @@ $username = $_SESSION['username'];
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
    <!-- Web Fonts  -->
-   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
    <!-- Vendor CSS -->
    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.css" />
@@ -167,7 +167,7 @@ $username = $_SESSION['username'];
                                  <div class="form-group">
                                     <label class="col-sm-3 control-label">Time Limit <span class="required"></span></label>
                                     <div class="col-sm-2">
-                                       <input type="number" name="timeLimit" id="timeLimit" min="1" class="form-control" required>
+                                       <input type="number" name="timeLimit" id="timeLimit" min="1" class="form-control" placeholder="in minutes" required>
                                     </div>
                                  </div>
                               </div>
@@ -194,6 +194,7 @@ $username = $_SESSION['username'];
                            <section class="panel-featured panel-featured-info">
                               <header class="panel-heading">
                                  <h2 class="panel-title">Question</h2>
+                                 <p class="panel-subtitle">For question with only 2 or 3 choices, please leave Choice C and/or Choice D empty.</p>
                               </header>
                               <div class="panel-body">
                                  <div class="form-group">
@@ -229,7 +230,7 @@ $username = $_SESSION['username'];
                                  <div class="form-group">
                                     <label class="col-sm-3 control-label">Answer <span class="required"></span></label>
                                     <div class="col-sm-2">
-                                       <input type="text" name="answer" class="form-control answer" required>
+                                       <input type="text" name="answer" class="form-control answer" placeholder="e.g., B" required>
                                     </div>
                                  </div>
                               </div>

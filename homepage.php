@@ -38,7 +38,7 @@ $stmt->execute();
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
    <!-- Web Fonts  -->
-   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
    <!-- Vendor CSS -->
    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.css" />
@@ -169,6 +169,7 @@ $stmt->execute();
                         <th>Name</th>
                         <th>Date</th>
                         <th>View</th>
+                        <th>Edit</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -178,9 +179,10 @@ $stmt->execute();
                      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo '<tr>';
                         echo '<td>' . $num . '</td>';
-                        echo '<td><a href="./viewQuestions.php?id=' . $row['id'] . '&quiz=' . $row['name'] . '">' . $row['name'] . '</a></td>';
+                        echo '<td><a href="./viewQuestions.php?id=' . $row['id'] . '&quiz=' . $row['name'] . '&ques=' . $row['numOfQues'] .'">' . $row['name'] . '</a></td>';
                         echo '<td>' . $row['date'] . '</td>';
-                        echo '<td><a href="./quizScore.php?id=' . $row['id'] . '&quiz=' . $row['name'] . '">View Score</a></td>';
+                        echo '<td><a href="./quizScore.php?id=' . $row['id'] . '&quiz=' . $row['name'] . '&ques=' . $row['numOfQues'] .'">View Score</a></td>';
+                        echo '<td><a href="./editQuizPage.php?id=' . $row['id'] .'">Edit <i class="fa fa-edit"></i></a></td>';
                         echo '</tr>';
                         $num++;
                      }
@@ -248,6 +250,16 @@ $stmt->execute();
 
    <!-- Examples -->
    <script src="assets/javascripts/dashboard/examples.dashboard.js"></script>
+
+   <!-- Specific Page Vendor -->
+   <!-- <script src="assets/vendor/select2/select2.js"></script>
+   <script src="assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+   <script src="assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+   <script src="assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script> -->
+   <!-- Examples -->
+   <!-- <script src="assets/javascripts/tables/examples.datatables.default.js"></script>
+   <script src="assets/javascripts/tables/examples.datatables.row.with.details.js"></script>
+   <script src="assets/javascripts/tables/examples.datatables.tabletools.js"></script> -->
 </body>
 
 </html>

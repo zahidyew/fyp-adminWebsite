@@ -12,51 +12,27 @@ $username = $_SESSION['username'];
 // Instantiate DB & connect
 $database = new Database();
 $db = $database->connect();
-
 $quizId = $_GET['id'];
-$flag = false;
 
-$query = 'DELETE FROM quizrecords 
-            WHERE quizId = :quizId';
+$query = 'SELECT * FROM quiz 
+            WHERE id = :quizId';
 
 $stmt = $db->prepare($query);
 $stmt->bindParam(':quizId', $quizId);
+$stmt->execute();
 
-if ($stmt->execute()) {
-   $query2 = 'DELETE FROM question 
-               WHERE quizId = :quizId';
-
-   $stmt2 = $db->prepare($query2);
-   $stmt2->bindParam(':quizId', $quizId);
-
-   if ($stmt2->execute()) {
-      $query3 = 'DELETE FROM quiz 
-                  WHERE id = :quizId';
-
-      $stmt3 = $db->prepare($query3);
-      $stmt3->bindParam(':quizId', $quizId);
-
-      if ($stmt3->execute()) {
-         $flag = true;
-      }
-   }
-}
-
-if ($flag == true) {
-   $msg = "Successfully deleted.";
-} else {
-   $msg = "Error. Unable to delete the records.";
-}
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!doctype html>
 <html class="fixed sidebar-left-collapsed">
 
 <head>
+
    <!-- Basic -->
    <meta charset="UTF-8">
 
-   <title>Admin Website</title>
+   <title>Admin Website | Edit Quiz</title>
    <meta name="keywords" content="HTML5 Admin Template" />
    <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
    <meta name="author" content="JSOFT.net">
@@ -180,26 +156,48 @@ if ($flag == true) {
 
          <section role="main" class="content-body">
             <header class="page-header">
+               <h2>Edit Quiz</h2>
             </header>
-            <div class="panel-body">
-               <p class="text-center text-dark"><?php echo $msg; ?></p>
-               <div class="row">
-                  <div class="text-center">
-                     <button class="btn btn-lg btn-primary" type="button" id="okBtn">OK</button>
-                  </div>
-               </div>
+            <div class="col-sm-10 col-sm-offset-1 panel-body">
+               <form action="./editQuiz.php" method="post">
+                  <section class="panel-featured">
+                     <header class="panel-heading">
+                        <h2 class="panel-title">Edit Quiz</h2>
+                     </header>
+                     <div class="panel-body">
+                        <div class="form-group">
+                           <label class="col-sm-3 control-label">Quiz Name <span class="required"></span></label>
+                           <div class="col-sm-6">
+                              <input type="text" name="quizName" id="quizName" class="form-control" value="<?php echo $row['name'] ?>" required>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="col-sm-3 control-label">Number of Questions <span class="required"></span></label>
+                           <div class="col-sm-2">
+                              <input type="number" name="numOfQues" id="numOfQues" min="1" class="form-control" value="<?php echo $row['numOfQues'] ?>" required disabled>
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="col-sm-3 control-label">Time Limit <span class="required"></span></label>
+                           <div class="col-sm-2">
+                              <input type="number" name="timeLimit" id="timeLimit" min="1" class="form-control" value="<?php echo $row['timeLimit'] ?>" placeholder="in minutes" required>
+                           </div>
+                        </div>
+                     </div>
+
+                     <footer class="panel-footer">
+                        <div class="row">
+                           <div class="col-sm-12 text-right">
+                              <button class="btn btn-primary" type="submit" name="submit" value="<?php echo $quizId ?>">Submit</button>
+                           </div>
+                        </div>
+                     </footer>
+                  </section>
+               </form>
             </div>
-            <!-- start: page -->
-            <!-- end: page -->
          </section>
       </div>
    </section>
-
-   <script>
-      const okBtn = document.getElementById("okBtn").addEventListener("click", () => {
-         window.location = "./homepage.php";
-      })
-   </script>
 
    <!-- Vendor -->
    <script src="assets/vendor/jquery/jquery.js"></script>

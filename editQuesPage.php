@@ -45,7 +45,7 @@ $postValue = "$quesId,$quizId";
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
    <!-- Web Fonts  -->
-   <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
    <!-- Vendor CSS -->
    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.css" />
@@ -202,7 +202,7 @@ $postValue = "$quesId,$quizId";
                         <div class="form-group">
                            <label class="col-sm-3 control-label">Answer <span class="required"></span></label>
                            <div class="col-sm-2">
-                              <input type="text" name="answer" class="form-control" value="<?php echo $row['answer'] ?>" required>
+                              <input type="text" name="answer" class="form-control" value="<?php echo $row['answer'] ?>" placeholder="e.g., B"  required>
                            </div>
                         </div>
                      </div>

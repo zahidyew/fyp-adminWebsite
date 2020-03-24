@@ -142,7 +142,7 @@ function redirectTo($url)
 							</div>
 						</div>
 
-						<p class="text-center">Don't have an account yet? <a href="register.php">Register!</a>
+						<!-- <p class="text-center">Don't have an account yet? <a href="register.php">Register!</a> -->
 
 					</form>
 				</div>

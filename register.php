@@ -1,67 +1,3 @@
-<?php
-include_once './config/Database.php';
-
-// Instantiate DB & connect
-$database = new Database();
-$db = $database->connect();
-$table = 'admin';
-
-// check if POST vars are set
-if (isset($_POST['uname']) && isset($_POST['password'])) {
-	$username = $_POST['uname'];
-	$password = $_POST['password'];
-	$email = $_POST['email'];
-
-	// TODO: add check for duplicate username. If exists in DB then inform, else proceed with insertion.
-
-	// SQL query and execute
-	$query = 'INSERT INTO ' . $table . ' SET 
-								username = :name, 
-								password = :pass, 
-								email = :email';
-
-	$stmt = $db->prepare($query);
-
-	//hash the password
-	$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-	$stmt->bindParam(':name', $username);
-	$stmt->bindParam(':pass', $hashedPassword);
-	$stmt->bindParam(':email', $email);
-
-	if ($stmt->execute()) {
-		echo '<script>alert("Success.");</script>';
-		/* echo '<div id="modalHeaderColorSuccess" class="modal-block modal-header-color modal-block-success mfp-hide">';
-			echo '<section class="panel">';
-				echo '<header class="panel-heading">';
-					echo '<h2 class="panel-title">Success!</h2>';
-				echo '</header>';
-				echo '<div class="panel-body">';
-					echo '<div class="modal-wrapper">';
-						echo '<div class="modal-icon">';
-							echo '<i class="fa fa-check"></i>';
-						echo '</div>';
-						echo '<div class="modal-text">';
-							echo '<h4>Success</h4>';
-							echo '<p>This is a successfull message.</p>';
-						echo '</div>';
-					echo '</div>';
-				echo '</div>';
-				echo '<footer class="panel-footer">';
-					echo '<div class="row">';
-						echo '<div class="col-md-12 text-right">';
-							echo '<button class="btn btn-success modal-dismiss">OK</button>';
-						echo '</div>';
-					echo '</div>';
-				echo '</footer>';
-			echo '</section>';
-		echo '</div>'; */
-	} else {
-		printf("Error: %s.\n", $stmt->error);
-		//return false;
-	}
-}
-?>
-
 <!doctype html>
 <html class="fixed">
 
@@ -108,16 +44,12 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
 	<!-- start: page -->
 	<section class="body-sign">
 		<div class="center-sign">
-			<!-- <a href="/" class="logo pull-left">
-					<img src="assets/images/logo.png" height="54" alt="Porto Admin" />
-				</a> -->
-
 			<div class="panel panel-sign">
 				<div class="panel-title-sign mt-xl text-right">
 					<h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Register</h2>
 				</div>
 				<div class="panel-body">
-					<form action="./register.php" method="post">
+					<form>
 						<div class="form-group mb-lg">
 							<label>Username</label>
 							<input id="uname" name="uname" type="text" class="form-control input-lg" required />
@@ -136,34 +68,91 @@ if (isset($_POST['uname']) && isset($_POST['password'])) {
 								</div>
 								<div class="col-sm-6 mb-lg">
 									<label>Password Confirmation</label>
-									<input name="pwd_confirm" type="password" class="form-control input-lg" required />
+									<input id="pwd_confirm" name="pwd_confirm" type="password" class="form-control input-lg" required />
 								</div>
 							</div>
 						</div>
 
 						<div class="row">
-							<!-- <div class="col-sm-8">
-									<div class="checkbox-custom checkbox-default">
-										<input id="AgreeTerms" name="agreeterms" type="checkbox"/>
-										<label for="AgreeTerms">I agree with <a href="#">terms of use</a></label>
-									</div>
-								</div> -->
 							<div class="col-sm-12 text-right">
-								<button type="submit" class="btn btn-primary hidden-xs">Register</button>
-								<button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Register</button>
+								<button id="register" type="button" class="btn btn-primary hidden-xs">Register</button>
+								<button id="register2" type="button" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Register</button>
 							</div>
 						</div>
-
-						<p class="text-center"><a href="index.php">Log in</a>
 
 					</form>
 				</div>
 			</div>
-
-			<!-- <p class="text-center text-muted mt-md mb-md">&copy; Copyright 2018. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p> -->
 		</div>
 	</section>
 	<!-- end: page -->
+
+	<script>
+		const usernameElem = document.getElementById("uname");
+		const emailElem = document.getElementById("email");
+		const pwdElem = document.getElementById("password");
+		const pwdConfirmElem = document.getElementById("pwd_confirm");
+		const registerBtn = document.getElementById("register");
+		const registerBtn2 = document.getElementById("register2");
+
+
+		registerBtn.addEventListener("click", () => {
+			postRequest();
+		})
+
+		registerBtn2.addEventListener("click", () => {
+			postRequest();
+		})
+
+		function getFormValues() {
+			const name = usernameElem.value;
+			const email = emailElem.value;
+			const pwd = pwdElem.value;
+			const pwdConfirm = pwdConfirmElem.value;
+
+			if (name === "" || email === "" || pwd === "" || pwdConfirm === "") {
+				alert("Please complete the form first.");
+				return false;
+			} else {
+				if (pwd != pwdConfirm) {
+					alert("Passwords do not match.\nPlease try again.");
+					return false;
+				} else {
+					const formData = {
+						username: name,
+						email: email,
+						password: pwd
+					};
+					return formData;
+				}
+			}
+		}
+
+		function postRequest() {
+			const formData = getFormValues();
+
+			if (formData === false) {
+
+			} else {
+				//console.log(formData);
+				fetch('./signUp.php', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(formData)
+					})
+					.then((response) => response.json())
+					.then((data) => {
+						//console.log('Success:', data);
+						window.location = "./index.php";
+					})
+					.catch((error) => {
+						console.error('Error:', error);
+					});
+			}
+		}
+	</script>
 
 	<!-- Vendor -->
 	<script src="assets/vendor/jquery/jquery.js"></script>

@@ -202,7 +202,7 @@ $postValue = "$quesId,$quizId";
                         <div class="form-group">
                            <label class="col-sm-3 control-label">Answer <span class="required"></span></label>
                            <div class="col-sm-2">
-                              <input type="text" name="answer" class="form-control" value="<?php echo $row['answer'] ?>" placeholder="e.g., B"  required>
+                              <input type="text" name="answer" class="form-control" value="<?php echo $row['answer'] ?>" placeholder="e.g., B" required>
                            </div>
                         </div>
                      </div>
@@ -210,6 +210,7 @@ $postValue = "$quesId,$quizId";
                      <footer class="panel-footer">
                         <div class="row">
                            <div class="col-sm-12 text-right">
+                              <button class="btn btn-default" type="button" id="cancel">Cancel</button><span> | </span>
                               <button class="btn btn-primary" type="submit" name="submit" value="<?php echo $postValue ?>">Submit</button>
                            </div>
                         </div>
@@ -220,6 +221,12 @@ $postValue = "$quesId,$quizId";
          </section>
       </div>
    </section>
+
+   <script>
+      const cancelBtn = document.getElementById("cancel").addEventListener("click", () => {
+         window.history.back();
+      });
+   </script>
 
    <!-- Vendor -->
    <script src="assets/vendor/jquery/jquery.js"></script>

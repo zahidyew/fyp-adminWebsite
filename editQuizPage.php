@@ -188,6 +188,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                      <footer class="panel-footer">
                         <div class="row">
                            <div class="col-sm-12 text-right">
+                              <button class="btn btn-default" type="button" id="cancel">Cancel</button><span> | </span>
                               <button class="btn btn-primary" type="submit" name="submit" value="<?php echo $quizId ?>">Submit</button>
                            </div>
                         </div>
@@ -198,6 +199,12 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
          </section>
       </div>
    </section>
+
+   <script>
+      const cancelBtn = document.getElementById("cancel").addEventListener("click", () => {
+         window.history.back();
+      });
+   </script>
 
    <!-- Vendor -->
    <script src="assets/vendor/jquery/jquery.js"></script>

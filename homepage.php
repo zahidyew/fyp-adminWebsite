@@ -49,7 +49,10 @@ $stmt->execute();
    <!-- Specific Page Vendor CSS -->
    <link rel="stylesheet" href="assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
    <link rel="stylesheet" href="assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
-   <link rel="stylesheet" href="assets/vendor/morris/morris.css" />
+
+   <!-- Specific Page Vendor CSS -->
+   <link rel="stylesheet" href="assets/vendor/select2/select2.css" />
+   <link rel="stylesheet" href="assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
 
    <!-- Theme CSS -->
    <link rel="stylesheet" href="assets/stylesheets/theme.css" />
@@ -179,10 +182,10 @@ $stmt->execute();
                      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         echo '<tr>';
                         echo '<td>' . $num . '</td>';
-                        echo '<td><a href="./viewQuestions.php?id=' . $row['id'] . '&quiz=' . $row['name'] . '&ques=' . $row['numOfQues'] .'">' . $row['name'] . '</a></td>';
+                        echo '<td><a href="./viewQuestions.php?id=' . $row['id'] . '&quiz=' . $row['name'] . '&ques=' . $row['numOfQues'] . '">' . $row['name'] . '</a></td>';
                         echo '<td>' . $row['date'] . '</td>';
-                        echo '<td><a href="./quizScore.php?id=' . $row['id'] . '&quiz=' . $row['name'] . '&ques=' . $row['numOfQues'] .'">View Score</a></td>';
-                        echo '<td><a href="./editQuizPage.php?id=' . $row['id'] .'">Edit <i class="fa fa-edit"></i></a></td>';
+                        echo '<td><a href="./quizScore.php?id=' . $row['id'] . '&quiz=' . $row['name'] . '&ques=' . $row['numOfQues'] . '">View Score</a></td>';
+                        echo '<td><a href="./editQuizPage.php?id=' . $row['id'] . '">Edit <i class="fa fa-edit"></i></a></td>';
                         echo '</tr>';
                         $num++;
                      }
@@ -216,27 +219,12 @@ $stmt->execute();
    <script src="assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
    <script src="assets/vendor/jquery-appear/jquery.appear.js"></script>
    <script src="assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
-   <script src="assets/vendor/jquery-easypiechart/jquery.easypiechart.js"></script>
-   <script src="assets/vendor/flot/jquery.flot.js"></script>
-   <script src="assets/vendor/flot-tooltip/jquery.flot.tooltip.js"></script>
-   <script src="assets/vendor/flot/jquery.flot.pie.js"></script>
-   <script src="assets/vendor/flot/jquery.flot.categories.js"></script>
-   <script src="assets/vendor/flot/jquery.flot.resize.js"></script>
-   <script src="assets/vendor/jquery-sparkline/jquery.sparkline.js"></script>
-   <script src="assets/vendor/raphael/raphael.js"></script>
-   <script src="assets/vendor/morris/morris.js"></script>
-   <script src="assets/vendor/gauge/gauge.js"></script>
-   <script src="assets/vendor/snap-svg/snap.svg.js"></script>
-   <script src="assets/vendor/liquid-meter/liquid.meter.js"></script>
-   <script src="assets/vendor/jqvmap/jquery.vmap.js"></script>
-   <script src="assets/vendor/jqvmap/data/jquery.vmap.sampledata.js"></script>
-   <script src="assets/vendor/jqvmap/maps/jquery.vmap.world.js"></script>
-   <script src="assets/vendor/jqvmap/maps/continents/jquery.vmap.africa.js"></script>
-   <script src="assets/vendor/jqvmap/maps/continents/jquery.vmap.asia.js"></script>
-   <script src="assets/vendor/jqvmap/maps/continents/jquery.vmap.australia.js"></script>
-   <script src="assets/vendor/jqvmap/maps/continents/jquery.vmap.europe.js"></script>
-   <script src="assets/vendor/jqvmap/maps/continents/jquery.vmap.north-america.js"></script>
-   <script src="assets/vendor/jqvmap/maps/continents/jquery.vmap.south-america.js"></script>
+
+   <!-- For Table Pagination -->
+   <script src="assets/vendor/select2/select2.js"></script>
+   <script src="assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
+   <script src="assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
+   <script src="assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
 
    <!-- Theme Base, Components and Settings -->
    <script src="assets/javascripts/theme.js"></script>
@@ -247,18 +235,9 @@ $stmt->execute();
    <!-- Theme Initialization Files -->
    <script src="assets/javascripts/theme.init.js"></script>
 
-
-   <!-- Examples -->
-   <script src="assets/javascripts/dashboard/examples.dashboard.js"></script>
-
    <!-- For Table Pagination -->
-   <!-- <script src="assets/vendor/select2/select2.js"></script>
-   <script src="assets/vendor/jquery-datatables/media/js/jquery.dataTables.js"></script>
-   <script src="assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js"></script>
-   <script src="assets/vendor/jquery-datatables-bs3/assets/js/datatables.js"></script>
    <script src="assets/javascripts/tables/examples.datatables.default.js"></script>
    <script src="assets/javascripts/tables/examples.datatables.row.with.details.js"></script>
-   <script src="assets/javascripts/tables/examples.datatables.tabletools.js"></script> -->
+   <script src="assets/javascripts/tables/examples.datatables.tabletools.js"></script>
 </body>
-
 </html>

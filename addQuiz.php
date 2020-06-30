@@ -315,6 +315,7 @@ $username = $_SESSION['username'];
          const numOfQues = numOfQuesElem.value;
          const timeLimit = timeLimitElem.value;
 
+         // check if any required fields are empty. If yes, return false & alert user & dont send fetch request.
          if (quizName === "" || numOfQues === "" || timeLimit === "") {
             return false;
          } else {
@@ -347,22 +348,26 @@ $username = $_SESSION['username'];
          // console.log(questionsData);
          const questionsData = getQuesFormValue();
 
-         fetch('./question.php', {
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-               },
-               body: JSON.stringify(questionsData)
-            })
-            .then((response) => response.json())
-            .then((data) => {
-               console.log('Success:', data);
-               alert("Success.");
-               location.replace("./homepage.php");
-            })
-            .catch((error) => {
-               console.error('Error:', error);
-            });
+         if (questionsData === false) {
+            alert("Please fill out all the fields.")
+         } else {
+            fetch('./question.php', {
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(questionsData)
+               })
+               .then((response) => response.json())
+               .then((data) => {
+                  console.log('Success:', data);
+                  alert("Success.");
+                  location.replace("./homepage.php");
+               })
+               .catch((error) => {
+                  console.error('Error:', error);
+               });
+         }
       });
 
       function getQuesFormValue() {
@@ -376,20 +381,25 @@ $username = $_SESSION['username'];
 
          // starts at index 1 as the "real 1st, i.e. [0]" is hidden by default.
          for (let i = 1; i <= numOfQues; i++) {
-            if (i == 1) {
-               questionArray += questionElem[i].value;
-               choice1Array += choice1Elem[i].value;
-               choice2Array += choice2Elem[i].value;
-               choice3Array += choice3Elem[i].value;
-               choice4Array += choice4Elem[i].value;
-               answerArray += answerElem[i].value;
+            // check if any required fields are empty. If yes, return false & alert user & dont send fetch request.
+            if (questionElem[i].value === "" || choice1Elem[i].value === "" || choice2Elem[i].value === "" || answerElem[i].value === "") {
+               return false;
             } else {
-               questionArray += ";" + questionElem[i].value;
-               choice1Array += ";" + choice1Elem[i].value;
-               choice2Array += ";" + choice2Elem[i].value;
-               choice3Array += ";" + choice3Elem[i].value;
-               choice4Array += ";" + choice4Elem[i].value;
-               answerArray += ";" + answerElem[i].value;
+               if (i == 1) {
+                  questionArray += questionElem[i].value;
+                  choice1Array += choice1Elem[i].value;
+                  choice2Array += choice2Elem[i].value;
+                  choice3Array += choice3Elem[i].value;
+                  choice4Array += choice4Elem[i].value;
+                  answerArray += answerElem[i].value;
+               } else {
+                  questionArray += ";" + questionElem[i].value;
+                  choice1Array += ";" + choice1Elem[i].value;
+                  choice2Array += ";" + choice2Elem[i].value;
+                  choice3Array += ";" + choice3Elem[i].value;
+                  choice4Array += ";" + choice4Elem[i].value;
+                  answerArray += ";" + answerElem[i].value;
+               }
             }
          }
 
@@ -431,4 +441,5 @@ $username = $_SESSION['username'];
    <!-- Theme Initialization Files -->
    <script src="assets/javascripts/theme.init.js"></script>
 </body>
+
 </html>
